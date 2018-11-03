@@ -24,19 +24,22 @@
 const adminLogin = 'admin';
 const adminPassword = 'm4ngo1zh4ackz0r';
 const userName = prompt('Напишите свой логин')
+const confirmUser = 'Добро пожаловать!';
+const cancelUser = 'Отменено пользователем!';
+const errorUser = 'Доступ запрещен!';
 
 if (adminLogin === userName) {
   const userPassword = prompt('Напишите свой пароль');
   if (userPassword === adminPassword) {
-    alert('Добро пожаловать!');
+    alert(confirmUser);
   } else if (userPassword === null) {
-    alert('Отменено пользователем!');
-  } else if (userPassword !== adminPassword) {
-    alert('Доступ запрещен!');
+    alert(cancelUser);
+  } else {
+    alert(errorUser);
   }
 
 } else if (userName === null) {
-  alert('Отменено пользователем!');
-} else if (userName !== adminLogin) {
-  alert('Доступ запрещён!');
+  alert(cancelUser);
+} else {
+  alert(errorUser);
 }

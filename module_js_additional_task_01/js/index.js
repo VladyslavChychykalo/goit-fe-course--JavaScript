@@ -27,34 +27,42 @@ const sharm = 15
 const hurgada = 25
 const taba = 6
 const freeSeats = Number.parseInt(prompt('Введите число свободных мест от 1 до 25'))
+const cancelUser = 'Нам очень жаль, приходите еще!'
+const errorUser = 'Ошибка ввода!'
+const confirmTaba = 'Приятного путешествия в группе taba'
+const confirmSharm = 'Приятного путешествия в группе sharm'
+const confirmHurgada = 'Приятного путешествия в группе hurgada'
+const questionTaba = 'Есть места в группе taba. Вы согласны присоединиться к этой группе ?'
+const questionSharm = 'Есть места в группе sharm. Вы согласны присоединиться к этой группе ?'
+const questionHurgada = 'Есть места в группе hurgada. Вы согласны присоединиться к этой группе ?'
 
 
 if (freeSeats >= 0) {
 
   if (freeSeats <= taba) {
-    if(confirm('Есть места в группе taba. Вы согласны присоединиться к этой группе ?') == true) {
-      alert('Приятного путешествия в группе taba');
+    if(confirm(questionTaba) == true) {
+      alert(confirmTaba);
     } else {
-      alert('Нам очень жаль, приходите еще!');
+      alert(cancelUser);
     }
   }
 
   if (freeSeats > taba && freeSeats <= sharm) {
-    if(confirm('Есть места в группе sharm. Вы согласны присоединиться к этой группе ?') == true) {
-      alert('Приятного путешествия в группе sharm');
+    if(confirm(questionSharm) == true) {
+      alert(confirmSharm);
     } else {
-      alert('Нам очень жаль, приходите еще!');
+      alert(cancelUser);
     }
   }
 
   if (freeSeats > sharm && freeSeats <= hurgada) {
-    if(confirm('Есть места в группе hurgada. Вы согласны присоединиться к этой группе ?') == true) {
-      alert('Приятного путешествия в группе hurgada');
+    if(confirm(questionHurgada) == true) {
+      alert(confirmHurgada);
     } else {
-      alert('Нам очень жаль, приходите еще!');
+      alert(cancelUser);
     }
   }
 
 } else {
-  alert('Ошибка ввода!');
+  alert(errorUser);
 }
