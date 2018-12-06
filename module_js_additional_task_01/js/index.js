@@ -26,43 +26,48 @@
 const sharm = 15
 const hurgada = 25
 const taba = 6
-const freeSeats = Number.parseInt(prompt('Введите число свободных мест от 1 до 25'))
-const cancelUser = 'Нам очень жаль, приходите еще!'
-const errorUser = 'Ошибка ввода!'
+
+const userInput = prompt('Введите число необходимых мест')
+const userChoise = Number.parseInt(userInput)
+
+const freeSeatsTaba = 'Есть места в группе taba, вы хотите присоединиться'
+const freeSeatsSharm = 'Есть места в группе sharm, вы хотите присоединиться'
+const freeSeatsHurgada = 'Есть места в группе hurgada, вы хотите присоединиться'
 const confirmTaba = 'Приятного путешествия в группе taba'
 const confirmSharm = 'Приятного путешествия в группе sharm'
 const confirmHurgada = 'Приятного путешествия в группе hurgada'
-const questionTaba = 'Есть места в группе taba. Вы согласны присоединиться к этой группе ?'
-const questionSharm = 'Есть места в группе sharm. Вы согласны присоединиться к этой группе ?'
-const questionHurgada = 'Есть места в группе hurgada. Вы согласны присоединиться к этой группе ?'
+const noSeats = 'Извините, столько мест нет ни в одной группе!'
+
+const error = "Ошибка ввода";
+const cancel = "Нам очень жаль, приходите еще!";
 
 
-if (freeSeats >= 0) {
-
-  if (freeSeats <= taba) {
-    if(confirm(questionTaba) == true) {
-      alert(confirmTaba);
-    } else {
-      alert(cancelUser);
-    }
+if (userChoise >= 1 && userChoise <= taba) {
+  if(confirm(freeSeatsTaba) === true) {
+    alert(confirmTaba)
+  } else {
+    alert(cancel)
   }
 
-  if (freeSeats > taba && freeSeats <= sharm) {
-    if(confirm(questionSharm) == true) {
-      alert(confirmSharm);
-    } else {
-      alert(cancelUser);
-    }
+} else if (userChoise > taba && userChoise <= sharm) {
+  if(confirm(freeSeatsSharm) === true) {
+    alert(confirmSharm)
+  } else {
+    alert(cancel)
   }
 
-  if (freeSeats > sharm && freeSeats <= hurgada) {
-    if(confirm(questionHurgada) == true) {
-      alert(confirmHurgada);
-    } else {
-      alert(cancelUser);
-    }
+} else if (userChoise > sharm && userChoise <= hurgada) {
+  if(confirm(freeSeatsHurgada) === true) {
+    alert(confirmHurgada)
+  } else {
+    alert(cancel)
   }
 
+} else if (userChoise <= 0 || userChoise > 25) {
+  alert(noSeats)
+
+} else if (userInput === null) {
+  alert(cancel)
 } else {
-  alert(errorUser);
+  alert(error)
 }

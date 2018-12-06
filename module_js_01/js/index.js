@@ -23,23 +23,25 @@
 
 const adminLogin = 'admin';
 const adminPassword = 'm4ngo1zh4ackz0r';
-const userName = prompt('Напишите свой логин')
-const confirmUser = 'Добро пожаловать!';
-const cancelUser = 'Отменено пользователем!';
-const errorUser = 'Доступ запрещен!';
+const cancel = 'Отменено пользователем!';
+const wrongLogin = 'Доступ запрещен, неверный логин!';
+const wrongPassword = 'Доступ запрещен, неверный пароль!';
+const rightPassword = 'Добро пожаловать!';
 
-if (adminLogin === userName) {
-  const userPassword = prompt('Напишите свой пароль');
-  if (userPassword === adminPassword) {
-    alert(confirmUser);
+const userLogin = prompt('Введите ваш логин')
+
+if(adminLogin === userLogin) {
+  const userPassword = prompt('Введите ваш пароль')
+  if(userPassword === adminPassword) {
+    alert(rightPassword)
   } else if (userPassword === null) {
-    alert(cancelUser);
+    alert(cancel)
   } else {
-    alert(errorUser);
+    alert(wrongPassword)
   }
 
-} else if (userName === null) {
-  alert(cancelUser);
+} else if (userLogin === null) {
+  alert(cancel)
 } else {
-  alert(errorUser);
+  alert(wrongLogin)
 }
