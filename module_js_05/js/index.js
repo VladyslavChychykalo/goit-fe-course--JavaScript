@@ -200,21 +200,23 @@ const getAllUniqueSkills = arr =>
         return acc.concat(user.skills);
       }
     }, [])
-    .sort()
-    .filter(user => {
-      if (user.includes(user.skills)) {
-        return user.skills;
+    .reduce((res, el) => {
+      if (!res.includes(el)) {
+        res.push(el);
       }
-    });
-
+      return res;
+    }, [])
+    .sort();
 console.log(getAllUniqueSkills(users));
 // [ 'adipisicing', 'amet', 'anim', 'commodo', 'culpa', 'elit', 'ex', 'ipsum', 'irure', 'laborum', 'lorem', 'mollit', 'non', 'nostrud', 'nulla', 'proident', 'tempor', 'velit', 'veniam' ]
 
 /**
  * Массив имен (поле name) людей, отсортированных в зависимости от количества их друзей (поле friends)
  */
-// const getUserNamesSortedByFriendsCount = arr =>
-//   arr.map(user => user.friends.length);
+const getUserNamesSortedByFriendsCount = arr =>
+  arr
+    .sort((a, b) => a.friends.length - b.friends.length)
+    .map(user => user.name);
 
-// console.log(getUserNamesSortedByFriendsCount(users));
+console.log(getUserNamesSortedByFriendsCount(users));
 // [ 'Moore Hensley', 'Sharlene Bush', 'Elma Head', 'Carey Barr', 'Blackburn Dotson', 'Sheree Anthony', 'Ross Vazquez' ]
