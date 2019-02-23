@@ -1,8 +1,4 @@
 'use strict';
-const clockface = document.querySelector('.js-time');
-const startBtn = document.querySelector('.js-start');
-const resetBtn = document.querySelector('.js-reset');
-
 class Timer {
   constructor({ timersParent }) {
     this.parentNode = timersParent;
@@ -64,7 +60,7 @@ class Timer {
 
   startTimer() {
     if (!this.isAсtive) {
-      this.startTime = Date.now();
+      this.startTime = Date.now() - this.deltaTime;
       this.isAсtive = true;
       this.updateTimer();
     } else {
