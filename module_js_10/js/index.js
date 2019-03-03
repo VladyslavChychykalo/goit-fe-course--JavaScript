@@ -113,39 +113,49 @@ const bD = {
 
   createElement() {
     this.allUsers = document.createElement('p');
+    this.allUsers.classList.add('text');
     this.allUsers.textContent = 'Click to show all users';
     this.btnAllUsers = document.createElement('button');
     this.btnAllUsers.textContent = 'Click me';
     this.btnAllUsers.classList.add('btn');
     this.resultAllUsers = document.createElement('p');
+    this.resultAllUsers.classList.add('text-result');
 
     this.usersById = document.createElement('p');
+    this.usersById.classList.add('text');
     this.usersById.textContent = 'Click to show user by id';
     this.btnUsersById = document.createElement('button');
     this.btnUsersById.textContent = 'Click me';
     this.btnUsersById.classList.add('btn');
     this.resultUsersById = document.createElement('p');
+    this.resultUsersById.classList.add('text-result');
 
     this.addNewUser = document.createElement('p');
+    this.addNewUser.classList.add('text');
     this.addNewUser.textContent = 'Click to show new user';
     this.btnAddUser = document.createElement('button');
     this.btnAddUser.textContent = 'Click me';
     this.btnAddUser.classList.add('btn');
     this.resultNewUser = document.createElement('p');
+    this.resultNewUser.classList.add('text-result');
 
     this.deleteUser = document.createElement('p');
+    this.deleteUser.classList.add('text');
     this.deleteUser.textContent = 'Click to show removed user';
     this.btnRemoveUser = document.createElement('button');
     this.btnRemoveUser.textContent = 'Click me';
     this.btnRemoveUser.classList.add('btn');
     this.resultRemovedUser = document.createElement('p');
+    this.resultRemovedUser.classList.add('text-result');
 
     this.updUser = document.createElement('p');
+    this.updUser.classList.add('text');
     this.updUser.textContent = 'Click to show update user';
     this.btnUpdUser = document.createElement('button');
     this.btnUpdUser.textContent = 'Click me';
     this.btnUpdUser.classList.add('btn');
     this.resultUpdUser = document.createElement('p');
+    this.resultUpdUser.classList.add('text-result');
 
     box.append(
       this.allUsers,
