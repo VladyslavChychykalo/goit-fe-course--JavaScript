@@ -21,26 +21,31 @@
   А так же панелью для вывода результатов операций с бэкендом.
 */
 
-const box = document.querySelector('.box');
-
 const bD = {
-  allUsers: null,
   btnAllUsers: null,
   resultAllUsers: null,
-  usersById: null,
-  btnUsersById: null,
-  resultUsersById: null,
-  addNewUser: null,
-  btnAddUser: null,
-  resultNewUser: null,
-  deleteUser: null,
-  btnRemoveUser: null,
-  resultRemovedUser: null,
-  updUser: null,
-  btnUpdUser: null,
-  resultUpdUser: null,
 
-  getAllUsers() {
+  resultUsersById: null,
+  idForm: null,
+  inputId: null,
+
+  resultNewUser: null,
+  newUserForm: null,
+  inputName: null,
+  inputAge: null,
+
+  resultRemovedUser: null,
+  removeUserForm: null,
+  inputRemoveUser: null,
+
+  resultUpdUser: null,
+  updateUserForm: null,
+  inputUpdName: null,
+  inputUpdAge: null,
+  inputUpdId: null,
+
+  getAllUsers(e) {
+    e.preventDefault();
     fetch(`https://test-users-api.herokuapp.com/users/`)
       .then(response => response.json())
       .then(data => {
@@ -50,169 +55,150 @@ const bD = {
       .catch(error => console.log(error));
   },
 
-  getUserById(id) {
-    fetch(`https://test-users-api.herokuapp.com/users/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.data);
-        this.resultUsersById.textContent = JSON.stringify(data.data);
-      })
-      .catch(error => console.log(error));
+  getUserById(e) {
+    e.preventDefault();
+    if (this.inputId.value === '') {
+      this.resultUsersById.textContent = "Please, enter users's id!";
+    } else
+      fetch(`https://test-users-api.herokuapp.com/users/${this.inputId.value}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.data === undefined) {
+            this.resultUsersById.textContent = 'User with this id not found!';
+          } else {
+            console.log(data.data);
+            this.resultUsersById.textContent = JSON.stringify(data.data);
+          }
+        })
+        .catch(error => console.log(error));
+    this.idForm.reset();
   },
 
-  addUser(name, age) {
-    fetch('https://test-users-api.herokuapp.com/users/', {
-      method: 'POST',
-      body: JSON.stringify({ name: name, age: age }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.data);
-        this.resultNewUser.textContent = JSON.stringify(data.data);
+  addUser(e) {
+    e.preventDefault();
+    if (this.inputName.value === '' || this.inputAge.value === '') {
+      this.resultNewUser.textContent =
+        'Please, enter all information about user';
+    } else if (Number(this.inputName.value)) {
+      this.resultNewUser.textContent = 'Name can match only a characters.';
+    } else
+      fetch('https://test-users-api.herokuapp.com/users/', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: this.inputName.value,
+          age: this.inputAge.value,
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       })
-      .catch(error => console.log(error));
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.data);
+          this.resultNewUser.textContent = JSON.stringify(data.data);
+        })
+        .catch(error => console.log(error));
+    this.newUserForm.reset();
   },
 
-  removeUser(id) {
-    fetch(`https://test-users-api.herokuapp.com/users/${id}`, {
-      method: 'DELETE',
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.data);
-        if (data.data === null) {
-          this.resultRemovedUser.textContent = '';
-        } else {
-          this.resultRemovedUser.textContent = JSON.stringify(data.data);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  removeUser(e) {
+    e.preventDefault();
+    if (this.inputRemoveUser.value === '') {
+      this.resultRemovedUser.textContent = "Please, enter users's id!";
+    } else
+      fetch(
+        `https://test-users-api.herokuapp.com/users/${
+          this.inputRemoveUser.value
+        }`,
+        {
+          method: 'DELETE',
+        },
+      )
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.data);
+          if (data.data === undefined) {
+            this.resultRemovedUser.textContent = 'User with this id not found!';
+          } else {
+            this.resultRemovedUser.textContent = JSON.stringify(data.data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    this.removeUserForm.reset();
   },
 
-  updateUser(id, user) {
-    fetch(`https://test-users-api.herokuapp.com/users/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(user),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.data);
-        this.resultUpdUser.textContent = JSON.stringify(data.data);
-      })
-      .catch(error => console.log(error));
+  updateUser(e) {
+    e.preventDefault();
+    if (Number(this.inputUpdName.value)) {
+      this.resultUpdUser.textContent = 'Name can match only a characters.';
+    } else if (
+      this.inputUpdName.value === '' ||
+      this.inputUpdAge.value === '' ||
+      this.inputUpdId.value === ''
+    ) {
+      this.resultUpdUser.textContent =
+        'Please, enter all information about user';
+    } else
+      fetch(
+        `https://test-users-api.herokuapp.com/users/${this.inputUpdId.value}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            name: this.inputUpdName.value,
+            age: this.inputUpdAge.value,
+          }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.data);
+          if (data.data === undefined) {
+            this.resultUpdUser.textContent = 'User with this id not found!';
+          } else {
+            this.resultUpdUser.textContent = JSON.stringify(data.data);
+          }
+        })
+        .catch(error => console.log(error));
+    this.updateUserForm.reset();
   },
 
   createElement() {
-    this.allUsers = document.createElement('p');
-    this.allUsers.classList.add('text');
-    this.allUsers.textContent = 'Click to show all users';
-    this.btnAllUsers = document.createElement('button');
-    this.btnAllUsers.textContent = 'Click me';
-    this.btnAllUsers.classList.add('btn');
-    this.resultAllUsers = document.createElement('p');
-    this.resultAllUsers.classList.add('text-result');
+    this.btnAllUsers = document.querySelector('.all-users-btn');
+    this.resultAllUsers = document.querySelector('.all-users-result');
 
-    this.usersById = document.createElement('p');
-    this.usersById.classList.add('text');
-    this.usersById.textContent = 'Click to show user by id';
-    this.btnUsersById = document.createElement('button');
-    this.btnUsersById.textContent = 'Click me';
-    this.btnUsersById.classList.add('btn');
-    this.resultUsersById = document.createElement('p');
-    this.resultUsersById.classList.add('text-result');
+    this.resultUsersById = document.querySelector('.result-user-id');
+    this.idForm = document.querySelector('#getId');
+    this.inputId = document.querySelector('#getId input');
 
-    this.addNewUser = document.createElement('p');
-    this.addNewUser.classList.add('text');
-    this.addNewUser.textContent = 'Click to show new user';
-    this.btnAddUser = document.createElement('button');
-    this.btnAddUser.textContent = 'Click me';
-    this.btnAddUser.classList.add('btn');
-    this.resultNewUser = document.createElement('p');
-    this.resultNewUser.classList.add('text-result');
+    this.resultNewUser = document.querySelector('.result-new-user');
+    this.newUserForm = document.querySelector('#addUser');
+    this.inputName = this.newUserForm.children[0];
+    this.inputAge = this.newUserForm.children[1];
 
-    this.deleteUser = document.createElement('p');
-    this.deleteUser.classList.add('text');
-    this.deleteUser.textContent = 'Click to show removed user';
-    this.btnRemoveUser = document.createElement('button');
-    this.btnRemoveUser.textContent = 'Click me';
-    this.btnRemoveUser.classList.add('btn');
-    this.resultRemovedUser = document.createElement('p');
-    this.resultRemovedUser.classList.add('text-result');
+    this.resultRemovedUser = document.querySelector('.result-removed-user');
+    this.removeUserForm = document.querySelector('#removeUser');
+    this.inputRemoveUser = document.querySelector('#removeUser input');
 
-    this.updUser = document.createElement('p');
-    this.updUser.classList.add('text');
-    this.updUser.textContent = 'Click to show update user';
-    this.btnUpdUser = document.createElement('button');
-    this.btnUpdUser.textContent = 'Click me';
-    this.btnUpdUser.classList.add('btn');
-    this.resultUpdUser = document.createElement('p');
-    this.resultUpdUser.classList.add('text-result');
-
-    box.append(
-      this.allUsers,
-      this.btnAllUsers,
-      this.resultAllUsers,
-      this.usersById,
-      this.btnUsersById,
-      this.resultUsersById,
-      this.addNewUser,
-      this.btnAddUser,
-      this.resultNewUser,
-      this.deleteUser,
-      this.btnRemoveUser,
-      this.resultRemovedUser,
-      this.updUser,
-      this.btnUpdUser,
-      this.resultUpdUser,
-    );
-
-    return box;
+    this.resultUpdUser = document.querySelector('.result-update-user');
+    this.updateUserForm = document.querySelector('#updateUser');
+    this.inputUpdName = this.updateUserForm.children[0];
+    this.inputUpdAge = this.updateUserForm.children[1];
+    this.inputUpdId = this.updateUserForm.children[2];
   },
 
   initFn() {
-    this.btnAllUsers.addEventListener(
-      'click',
-      function() {
-        this.getAllUsers();
-      }.bind(this),
-    );
-
-    this.btnUsersById.addEventListener(
-      'click',
-      function() {
-        this.getUserById('5c7c17ed5d02f30014ce24cb');
-      }.bind(this),
-    );
-
-    this.btnAddUser.addEventListener(
-      'click',
-      function() {
-        this.addUser('Johnny Cash', 71);
-      }.bind(this),
-    );
-
-    this.btnRemoveUser.addEventListener(
-      'click',
-      function() {
-        this.removeUser('5c7c19285d02f30014ce24d1');
-      }.bind(this),
-    );
-
-    this.btnUpdUser.addEventListener(
-      'click',
-      function() {
-        this.updateUser('5c7c194a5d02f30014ce24d2', { name: 'Debik', age: 12 });
-      }.bind(this),
-    );
+    this.btnAllUsers.addEventListener('click', this.getAllUsers.bind(this));
+    this.idForm.addEventListener('submit', this.getUserById.bind(this));
+    this.newUserForm.addEventListener('submit', this.addUser.bind(this));
+    this.removeUserForm.addEventListener('submit', this.removeUser.bind(this));
+    this.updateUserForm.addEventListener('submit', this.updateUser.bind(this));
   },
 };
 
