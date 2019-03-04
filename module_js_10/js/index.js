@@ -68,7 +68,7 @@ const bD = {
           </table>`;
           this.resultAllUsers.innerHTML = markup;
         }
-        // console.log(data.data);
+        console.log(data.data);
         // this.resultAllUsers.textContent = JSON.stringify(data.data);
       })
       .catch(error => console.log(error));
@@ -87,10 +87,9 @@ const bD = {
           } else {
             let markup = `<p>User name:${data.data.name}</p>
             <p>User age:${data.data.age}</p>
-            <p>User id:${data.data.id}`;
-
+            <p>User id:${data.data.id}</p>`;
+            console.log(data.data);
             this.resultUsersById.innerHTML = markup;
-            // console.log(data.data);
             // this.resultUsersById.textContent = JSON.stringify(data.data);
           }
         })
@@ -119,8 +118,10 @@ const bD = {
       })
         .then(response => response.json())
         .then(data => {
+          let markup = `<p>User name:${data.data.name}</p>
+            <p>User age:${data.data.age}</p>`;
           console.log(data.data);
-          this.resultNewUser.textContent = JSON.stringify(data.data);
+          this.resultNewUser.innerHTML = markup;
         })
         .catch(error => console.log(error));
     this.newUserForm.reset();
@@ -145,12 +146,13 @@ const bD = {
           if (data.data === undefined) {
             this.resultRemovedUser.textContent = 'User with this id not found!';
           } else {
-            this.resultRemovedUser.textContent = JSON.stringify(data.data);
+            let markup = `<p>User name:${data.data.name}</p>
+            <p>User age:${data.data.age}</p>
+            <p>User id:${data.data.id}</p>`;
+            this.resultRemovedUser.innerHTML = markup;
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch(error => console.log(error));
     this.removeUserForm.reset();
   },
 
@@ -186,7 +188,10 @@ const bD = {
           if (data.data === undefined) {
             this.resultUpdUser.textContent = 'User with this id not found!';
           } else {
-            this.resultUpdUser.textContent = JSON.stringify(data.data);
+            let markup = `<p>User name:${data.data.name}</p>
+            <p>User age:${data.data.age}</p>
+            <p>User id:${data.data.id}</p>`;
+            this.resultUpdUser.innerHTML = markup;
           }
         })
         .catch(error => console.log(error));
