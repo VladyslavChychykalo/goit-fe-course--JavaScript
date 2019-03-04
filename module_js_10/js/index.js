@@ -49,8 +49,27 @@ const bD = {
     fetch(`https://test-users-api.herokuapp.com/users/`)
       .then(response => response.json())
       .then(data => {
-        console.log(data.data);
-        this.resultAllUsers.textContent = JSON.stringify(data.data);
+        let body = data.data;
+        let result = '';
+        for (let obj of body) {
+          result += `<tr>
+            <td>${obj.name}</td>
+            <td>${obj.age}</td>
+            <td>${obj.id}</td>
+          </tr>`;
+
+          let markup = `<table>
+              <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Id</th>
+              </tr>
+              ${result}
+          </table>`;
+          this.resultAllUsers.innerHTML = markup;
+        }
+        // console.log(data.data);
+        // this.resultAllUsers.textContent = JSON.stringify(data.data);
       })
       .catch(error => console.log(error));
   },
@@ -66,8 +85,13 @@ const bD = {
           if (data.data === undefined) {
             this.resultUsersById.textContent = 'User with this id not found!';
           } else {
-            console.log(data.data);
-            this.resultUsersById.textContent = JSON.stringify(data.data);
+            let markup = `<p>User name:${data.data.name}</p>
+            <p>User age:${data.data.age}</p>
+            <p>User id:${data.data.id}`;
+
+            this.resultUsersById.innerHTML = markup;
+            // console.log(data.data);
+            // this.resultUsersById.textContent = JSON.stringify(data.data);
           }
         })
         .catch(error => console.log(error));
