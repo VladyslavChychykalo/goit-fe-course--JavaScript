@@ -1,0 +1,23 @@
+/*
+   Import partials below
+*/
+@import './normalize';
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.favorites-wrapper {
+  display: flex;
+}
+
+.favorites-card {
+  width: 300px;
+  height: 200px;
+}
+
+.favorites-card__img {
+  width: 300px;
+  height: 200px;
+}
