@@ -1,8 +1,4 @@
 'use strict';
-
-// import { link } from 'fs';
-// import { format } from 'path';
-
 /* 
   Напишите приложение для хранения url веб-страниц в виде карточек-закладок. 
   
@@ -76,21 +72,26 @@ function onUrlAdding(event) {
 
   if (!reg.test(input.value)) {
     alert('Не прошло валидацию!');
-  } else fetch(url).then(function (response) {
-    if (response.ok) return response.json();
-    throw new Error('error' + response.statusText);
-  }).then(function (data) {
-    if (data.url === input.value) {
-      alert('Такая закладка уже существует!');
-      console.log(data);
-    } else {
-      urlList.unshift(data);
-      setUrlToLocalStorage(urlList);
-      drawFavorites();
-    }
-  }).catch(function (err) {
-    return console.log(err);
-  });
+  } else {
+    fetch(url).then(function (response) {
+      if (response.ok) return response.json();
+      throw new Error('error' + response.statusText);
+    }).then(function (data) {
+      if (urlList.find(function (el) {
+        return el.url === data.url;
+      })) {
+        alert('Такая закладка уже существует!');
+        console.log(data);
+      } else {
+        cardSection.innerHTML = '';
+        urlList.unshift(data);
+        setUrlToLocalStorage(urlList);
+        drawFavorites();
+      }
+    }).catch(function (err) {
+      return console.log(err);
+    });
+  }
   form.reset();
 }
 

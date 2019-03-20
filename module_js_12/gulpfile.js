@@ -64,7 +64,8 @@ gulp.task('scripts', () =>
     .pipe(gulp.dest('./build/js'))
     .pipe(uglify())
     .pipe(rename('scripts.min.js'))
-    .pipe(gulp.dest('./build/js')),
+    .pipe(gulp.dest('./build/js'))
+    .pipe(browserSync.stream()),
 );
 
 gulp.task('svg-sprite', () =>
