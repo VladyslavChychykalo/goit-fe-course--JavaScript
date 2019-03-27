@@ -68,7 +68,7 @@ function onUrlAdding(event) {
   event.preventDefault();
   var API_KEY = '5c8ce7f5e8eabc0a94cff7a1e60bd1c87bc2f4d0d14c4';
   var reg = /^(ftp|http|https):\/\/[^ "]+$/;
-  var url = 'http://api.linkpreview.net/?key=' + API_KEY + '&q=' + input.value;
+  var url = 'https://api.linkpreview.net/?key=' + API_KEY + '&q=' + input.value;
 
   if (!reg.test(input.value)) {
     alert('Не прошло валидацию!');
