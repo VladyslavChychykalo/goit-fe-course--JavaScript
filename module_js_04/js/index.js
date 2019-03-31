@@ -68,6 +68,7 @@ function Cashier(name, productDatabase, customerMoney = 0) {
     }
     return totalSum;
   };
+
   this.countChange = function(totalPrice) {
     if (this.customerMoney > totalPrice) {
       const change = this.customerMoney - totalPrice;

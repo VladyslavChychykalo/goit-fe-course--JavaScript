@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /*
   Напишите скрипт, для авторизации администратора в панели управления.
@@ -28,20 +28,19 @@ const wrongLogin = 'Доступ запрещен, неверный логин!'
 const wrongPassword = 'Доступ запрещен, неверный пароль!';
 const rightPassword = 'Добро пожаловать!';
 
-const userLogin = prompt('Введите ваш логин')
+const userLogin = prompt('Введите ваш логин');
 
-if(adminLogin === userLogin) {
-  const userPassword = prompt('Введите ваш пароль')
-  if(userPassword === adminPassword) {
-    alert(rightPassword)
+if (adminLogin === userLogin) {
+  const userPassword = prompt('Введите ваш пароль');
+  if (userPassword === adminPassword) {
+    alert(rightPassword);
   } else if (userPassword === null) {
-    alert(cancel)
+    alert(cancel);
   } else {
-    alert(wrongPassword)
+    alert(wrongPassword);
   }
-
 } else if (userLogin === null) {
-  alert(cancel)
+  alert(cancel);
 } else {
-  alert(wrongLogin)
+  alert(wrongLogin);
 }

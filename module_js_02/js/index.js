@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /*
   Написать следующий скрипт:
@@ -21,14 +21,13 @@
       в массив чисел не нужно, после чего снова пользователю предлагается ввести число в prompt.
 */
 
-
 let userInput;
 const numbers = [];
 let total = 0;
 
 do {
-  userInput = prompt('Введите число')
-  
+  userInput = prompt('Введите число');
+
   if (!Number.isNaN(+userInput) && userInput !== null) {
     numbers.push(+userInput);
   } else if (userInput !== null) {
@@ -36,9 +35,9 @@ do {
   }
 } while (userInput !== null);
 
-if(numbers.length > 0) {
-  for(const value of numbers) {
-    total += value
+if (numbers.length > 0) {
+  for (const value of numbers) {
+    total += value;
   }
   alert(`Общая сумма чисел ${total}`);
 }
