@@ -54,209 +54,120 @@
 const galleryItems = [
   {
     preview: './img/preview-1.jpeg',
-    fullview: './img/fullview-1.jpeg',
+    fullview: 'img/fullview-1.jpeg',
     alt: 'alt text 1',
   },
   {
-    preview: './img/preview-2.jpeg',
-    fullview: './img/fullview-2.jpeg',
+    preview: 'img/preview-2.jpeg',
+    fullview: 'img/fullview-2.jpeg',
     alt: 'alt text 2',
   },
   {
-    preview: './img/preview-3.jpeg',
-    fullview: './img/fullview-3.jpeg',
+    preview: 'img/preview-3.png',
+    fullview: 'img/fullview-3.png',
     alt: 'alt text 3',
   },
   {
-    preview: './img/preview-4.jpeg',
-    fullview: './img/fullview-4.jpeg',
+    preview: 'img/preview-4.jpeg',
+    fullview: 'img/fullview-4.jpeg',
     alt: 'alt text 4',
   },
   {
-    preview: './img/preview-5.jpeg',
-    fullview: './img/fullview-5.jpeg',
+    preview: 'img/preview-5.jpeg',
+    fullview: 'img/fullview-5.jpeg',
     alt: 'alt text 5',
   },
   {
-    preview: './img/preview-6.jpeg',
-    fullview: './img/fullview-6.jpeg',
+    preview: 'img/preview-6.jpeg',
+    fullview: 'img/fullview-6.jpeg',
     alt: 'alt text 6',
   },
 ];
 
-const imageGallery = document.querySelector('.js-image-gallery');
-
-const gallery = {
-  containerImg: null,
-  previewList: null,
-  fullviewImg: null,
-  imageList: null,
-
-  createElements() {
-    this.containerImg = document.createElement('div');
-    this.containerImg.classList.add('fullview');
-
+class Gallery {
+  constructor({ items, parentNode, defaultActiveItem }) {
+    this.items = items;
+    this.parentNode = parentNode;
+    this.defaultActiveItem = defaultActiveItem;
     this.fullviewImg = document.createElement('img');
+  }
+
+  setFullviewElement() {
+    const containerImg = document.createElement('div');
+    containerImg.classList.add('fullview');
+    this.parentNode.appendChild(containerImg);
+
     this.fullviewImg.classList.add('fullviewImg');
+    const imageFullview = this.setFullviewImg(
+      this.items[this.defaultActiveItem],
+    );
+    containerImg.appendChild(this.fullviewImg);
 
-    this.containerImg.appendChild(this.fullviewImg);
+    return containerImg;
+  }
 
-    this.previewList = document.createElement('ul');
-    this.previewList.classList.add('preview');
+  setFullviewImg({ fullview, alt }) {
+    this.fullviewImg.src = fullview;
+    this.fullviewImg.alt = alt;
+  }
 
-    imageGallery.append(this.containerImg, this.previewList);
-    return imageGallery;
-  },
+  setPreviewElement({ preview, fullview, alt }) {
+    const previewItem = document.createElement('li');
+    previewItem.classList.add('list-preview__item');
 
-  fullviewImgContainer() {
-    for (let el of galleryItems) {
-      this.imageList = document.createElement('li');
-      this.previewList.append(this.imageList);
+    const previewImg = document.createElement('img');
+    previewImg.classList.add('preview');
+    previewImg.src = preview;
+    previewImg.dataset.fullview = fullview;
+    previewImg.alt = alt;
+
+    previewItem.appendChild(previewImg);
+    return previewItem;
+  }
+
+  createPreviewList() {
+    const previewContainer = document.createElement('ul');
+    previewContainer.classList.add('list-preview');
+    this.parentNode.appendChild(previewContainer);
+    previewContainer.addEventListener('click', this.changeFullview.bind(this));
+
+    const previewList = this.items.map(img => this.setPreviewElement(img));
+    previewContainer.append(...previewList);
+    const activePreview = this.parentNode.querySelectorAll('.preview')[
+      this.defaultActiveItem
+    ];
+    activePreview.classList.add('preview--active');
+    return previewList;
+  }
+
+  createGallery() {
+    const gallery = {
+      fullview: this.setFullviewElement(),
+      previewList: this.createPreviewList(),
+    };
+
+    return gallery;
+  }
+
+  changeFullview({ target }) {
+    if (target.className !== 'preview') return;
+    this.setActiveImage(target);
+    this.setFullviewImg(target.dataset, target.alt);
+  }
+
+  setActiveImage(nextPreview) {
+    const currentPreviewImg = this.parentNode.querySelector('.preview--active');
+    if (currentPreviewImg) {
+      currentPreviewImg.classList.toggle('preview--active');
     }
-  },
-};
+    nextPreview.classList.toggle('preview--active');
+  }
+}
 
-console.log(gallery.createElements());
-/*
-  ⚠️ ЗАДАНИЕ ПОВЫШЕННОЙ СЛОЖНОСТИ - ВЫПОЛНЯТЬ ПО ЖЕЛАНИЮ
+const gallery = new Gallery({
+  items: galleryItems,
+  parentNode: document.querySelector('.image-gallery'),
+  defaultActiveItem: 0,
+});
 
-  Создайте плагин галлереи используя ES6 класс. Добавьте поля и методы класса так,
-  чтобы можно было создать любое количество галлерей на странице. Функционал плагина
-  аналогичный заданию выше.
-
-  При создании экземпляра конструктор получает:
-    - items - список элементов для preview
-    - parentNode - ссылку на DOM-узел в который будут помещены fullview и preview
-    - defaultActiveItem - номер активного элемента preview по умолчанию
-
-  Тогда создание экземпляра будет выглядеть следующим образом.
-*/
-
-// new Gallery({
-//   items: galleryItems,
-//   parentNode: document.querySelector('.image-gallery'),
-//   defaultActiveItem: 1,
-// });
-
-// /* Далее плагин работает в автономном режиме */
-
-// const galleryItems = [
-//   {
-//     preview: './img/preview-1.jpeg',
-//     fullview: 'img/fullview-1.jpeg',
-//     alt: 'alt text 1',
-//   },
-//   {
-//     preview: 'img/preview-2.jpeg',
-//     fullview: 'img/fullview-2.jpeg',
-//     alt: 'alt text 2',
-//   },
-//   {
-//     preview: 'img/preview-3.png',
-//     fullview: 'img/fullview-3.png',
-//     alt: 'alt text 3',
-//   },
-//   {
-//     preview: 'img/preview-4.jpeg',
-//     fullview: 'img/fullview-4.jpeg',
-//     alt: 'alt text 4',
-//   },
-//   {
-//     preview: 'img/preview-5.jpeg',
-//     fullview: 'img/fullview-5.jpeg',
-//     alt: 'alt text 5',
-//   },
-//   {
-//     preview: 'img/preview-6.jpeg',
-//     fullview: 'img/fullview-6.jpeg',
-//     alt: 'alt text 6',
-//   },
-// ];
-
-// class Gallery {
-//   constructor({ items, parentNode, defaultActiveItem = 0 }) {
-//     this.items = items;
-//     this.parentNode = parentNode;
-//     this.defaultActiveItem = defaultActiveItem;
-//     this.fullviewImg = document.createElement('img');
-//   }
-
-//   setFullviewElement() {
-//     const containerImg = document.createElement('div');
-//     containerImg.classList.add('fullview');
-//     this.parentNode.appendChild(containerImg);
-
-//     this.fullviewImg.classList.add('fullviewImg');
-//     const imageFullview = this.setFullviewImg(
-//       this.items[this.defaultActiveItem],
-//     );
-//     containerImg.appendChild(this.fullviewImg);
-
-//     return containerImg;
-//   }
-
-//   setFullviewImg({ fullview, alt }) {
-//     this.fullviewImg.src = fullview;
-//     this.fullviewImg.alt = alt;
-//   }
-
-//   setPreviewElement({ preview, fullview, alt }) {
-//     const previewItem = document.createElement('li');
-//     previewItem.classList.add('list-preview__item');
-
-//     const previewImg = document.createElement('img');
-//     previewImg.classList.add('preview');
-//     previewImg.src = preview;
-//     previewImg.dataset.fullview = fullview;
-//     previewImg.alt = alt;
-
-//     previewItem.appendChild(previewImg);
-//     return previewItem;
-//   }
-
-//   createPreviewList() {
-//     const previewContainer = document.createElement('ul');
-//     previewContainer.classList.add('list-preview');
-//     this.parentNode.appendChild(previewContainer);
-//     previewContainer.addEventListener('click', this.changeFullview.bind(this));
-
-//     const previewList = this.items.map(img => this.setPreviewElement(img));
-//     previewContainer.append(...previewList);
-//     const activePreview = this.parentNode.querySelectorAll('.preview')[
-//       this.defaultActiveItem
-//     ];
-//     activePreview.classList.add('preview--active');
-//     return previewList;
-//   }
-
-//   createGallery() {
-//     const gallery = {
-//       fullview: this.setFullviewElement(),
-//       previewList: this.createPreviewList(),
-//     };
-
-//     return gallery;
-//   }
-
-//   changeFullview({ target }) {
-//     if (target.className !== 'preview') return;
-//     this.setActiveImage(target);
-//     this.setFullviewImg(target.dataset, target.alt);
-//   }
-
-//   setActiveImage(nextPreview) {
-//     const currentPreviewImg = this.parentNode.querySelector('.preview--active');
-//     if (currentPreviewImg) {
-//       currentPreviewImg.classList.toggle('preview--active');
-//     }
-//     nextPreview.classList.toggle('preview--active');
-//   }
-// }
-
-// const gallery = new Gallery({
-//   items: galleryItems,
-//   parentNode: document.querySelector('.image-gallery'),
-//   defaultActiveItem: 0,
-// });
-
-// gallery.createGallery();
+gallery.createGallery();
