@@ -121,12 +121,7 @@ console.log(getUsersByGender(users, 'male')); // [ 'Moore Hensley', 'Ross Vazque
 /**
  * Получить массив только неактивных пользователей (поле isActive)
  */
-const getInactiveUsers = arr =>
-  arr.filter(user => {
-    if (!user.isActive) {
-      return user;
-    }
-  });
+const getInactiveUsers = arr => arr.filter(user => !user.isActive);
 console.log(getInactiveUsers(users)); // [объект Moore Hensley, объект Ross Vazquez, объект Blackburn Dotson]
 
 /**
