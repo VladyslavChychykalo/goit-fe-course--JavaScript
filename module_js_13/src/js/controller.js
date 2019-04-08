@@ -15,7 +15,6 @@ export default class Controller {
     document.addEventListener(
       'DOMContentLoaded',
       this.view.drawFavorites(this.model.urlList),
-      // сюда попробовать добавить drawFavorites и разобраться с этой функцией
     );
   }
 }

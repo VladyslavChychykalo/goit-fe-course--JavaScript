@@ -6,4 +6,5 @@ import './css/styles.css';
 const view = new View();
 const model = new Model();
 
-new Controller(model, view);
+const controller = new Controller(model, view);
+controller.loadPage();
