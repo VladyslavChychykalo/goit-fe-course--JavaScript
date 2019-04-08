@@ -9,26 +9,29 @@ export default class Model {
     const reg = /^(ftp|http|https):\/\/[^ "]+$/;
     const url = `https://api.linkpreview.net/?key=${API_KEY}&q=${value}`;
 
-    if (!reg.test(value)) {
-      alert('Не прошло валидацию!');
-    } else {
-      fetch(url)
-        .then(response => {
-          if (response.ok) return response.json();
-          throw new Error('error' + response.statusText);
-        })
-        .then(data => {
-          if (this.urlList.find(el => el.url === data.url)) {
-            alert('Такая закладка уже существует!');
-            console.log(data);
-          } else {
-            this.urlList.unshift(data);
-            this.setUrlToLocalStorage(this.urlList);
-          }
-        })
-        .catch(err => console.log(err));
-    }
-    return new Promise(resolve => resolve(this.urlList));
+    return new Promise(resolve => {
+      if (!reg.test(value)) {
+        resolve(this.urlList);
+        alert('Не прошло валидацию!');
+      } else {
+        fetch(url)
+          .then(response => {
+            if (response.ok) return response.json();
+            throw new Error('error' + response.statusText);
+          })
+          .then(data => {
+            if (this.urlList.find(el => el.url === data.url)) {
+              resolve(this.urlList);
+              alert('Такая закладка уже существует!');
+            } else {
+              this.urlList.unshift(data);
+              this.setUrlToLocalStorage(this.urlList);
+              resolve(this.urlList);
+            }
+          })
+          .catch(err => console.log(err));
+      }
+    });
   }
 
   removeItem(cardUrl) {
@@ -37,9 +40,6 @@ export default class Model {
     );
     console.log(this.urlList);
     this.urlList.splice([indexOfDeletedUrl], 1);
-    console.log(this.urlList);
-    console.log(indexOfDeletedUrl);
-    console.log(cardUrl);
     this.setUrlToLocalStorage(this.urlList);
   }
   setUrlToLocalStorage(array) {

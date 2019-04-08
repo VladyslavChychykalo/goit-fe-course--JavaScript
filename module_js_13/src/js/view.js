@@ -8,6 +8,7 @@ export default class View extends EventEmitter {
     this.input = document.querySelector('.url-form__input');
     this.addUrlButton = document.querySelector('.url-form__button');
     this.cardSection = document.querySelector('.favorites-wrapper');
+    this.ring = document.querySelector('.ring-wrapper');
     this.form.addEventListener('submit', this.onUrlAdding.bind(this));
     this.cardSection.addEventListener('click', this.onDeleteClick.bind(this));
     this.cardForDeleteUrl;
@@ -31,6 +32,7 @@ export default class View extends EventEmitter {
       '',
     );
     this.cardSection.insertAdjacentHTML('afterbegin', cardMarkup);
+    // this.toggleRing();
   }
   onDeleteClick(event) {
     if (event.target.nodeName === 'BUTTON') {
@@ -42,4 +44,8 @@ export default class View extends EventEmitter {
       cardForDelete.remove();
     }
   }
+
+  // toggleRing() {
+  //   this.ring.classList.toggle('ring--hidden');
+  // }
 }
