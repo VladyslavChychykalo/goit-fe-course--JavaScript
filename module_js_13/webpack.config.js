@@ -1,71 +1,104 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const argv = require('yargs').argv; // dev - prod
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-  entry: ['babel-polyfill', './src/index.js'],
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build'),
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
-      },
-      {
-        test: /\.css$/,
-        exclude: /node_modules/,
-        use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-        ],
-      },
-      {
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-          'sass-loader',
-        ],
-      },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: ['file-loader'],
-      },
-      {
-        test: /\.hbs$/,
-        exclude: /node_modules/,
-        use: ['handlebars-loader'],
-      },
+const isDevelopment = argv.mode === 'development';
+const isProduction = !isDevelopment;
+const distPath = path.join(__dirname, '/public'); // final dir
+
+const config = {
+    entry: {
+        main: './src/js/index.js'
+    },
+    output: {
+        filename: 'bundle.js', // final js-file from index.js
+        path: distPath
+    },
+    module: {
+        rules: [{
+            test: /\.html$/, // with wich files to work with
+            use: 'html-loader' // npm packet to work with additional files, like .php mp3 woff etc
+        },{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: [{
+                loader: 'babel-loader'
+            }]
+        }, {
+            test: /\.scss$/,
+            exclude: /node_modules/,
+            use: [
+                isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+                'css-loader',
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    plugins: [
+                      isProduction ? require('cssnano') : () => {},
+                      require('autoprefixer')({
+                        browsers: ['last 2 versions']
+                      })
+                    ]
+                  }
+                },
+                'sass-loader'
+              ]
+        }, {
+            test: /\.(gif|png|jpe?g|svg)$/i,
+            use: [{
+                loader: 'file-loader',
+                options: {
+                  name: 'images/[name][hash].[ext]'
+                }
+              }, {
+                loader: 'image-webpack-loader',
+                options: {
+                  mozjpeg: {
+                    progressive: true,
+                    quality: 70
+                  }
+                }
+              }]
+        }, {
+            test: /\.(eot|svg|ttf|woff|woff2)$/,
+            use: {
+                loader: 'file-loader',
+                options: {
+                    name: 'fonts/[name][hash].ext'
+                }
+            }
+        }
+        ]
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].css'
+        }),
+        new HtmlWebpackPlugin({
+          template: './src/index.html'
+        })
     ],
-  },
-  plugins: [
-    new CleanWebpackPlugin('build'),
-    new HtmlWebpackPlugin({
-      hash: true,
-      template: './public/index.html',
-      filename: 'index.html',
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'styles.css',
-    }),
-  ],
-  devServer: {
-    historyApiFallback: true,
-    noInfo: false,
-    quiet: false,
-    stats: 'errors-only',
-    clientLogLevel: 'warning',
-    compress: true,
-    port: 9001,
-  },
+    optimization: isProduction ? {
+        minimizer: [
+          new UglifyJsPlugin({
+            sourceMap: true,
+            uglifyOptions: {
+              compress: {
+                inline: false,
+                drop_console: true
+              },
+            },
+          }),
+        ],
+    } : {},    
+    devServer: {
+        contentBase: distPath,
+        port: 9001,
+        compress: true,
+        open: true
+    }
 };
+module.exports = config;
