@@ -6,7 +6,10 @@ export default class Controller {
     view.on('remove', this.removeItem.bind(this));
   }
   addItem(value) {
-    this.model.unshiftItem(value).then(list => this.view.drawFavorites(list));
+    this.model.unshiftItem(value).then(list => {
+      this.view.drawFavorites(list);
+      this.view.toggleRing();
+    });
   }
   removeItem() {
     this.model.removeItem(this.view.cardForDeleteUrl);

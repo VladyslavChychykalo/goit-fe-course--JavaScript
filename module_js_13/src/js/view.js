@@ -14,6 +14,7 @@ export default class View extends EventEmitter {
     this.cardForDeleteUrl;
   }
   onUrlAdding(event) {
+    this.toggleRing();
     event.preventDefault();
     const { value } = this.input;
     this.cardSection.innerHTML = '';
@@ -32,7 +33,6 @@ export default class View extends EventEmitter {
       '',
     );
     this.cardSection.insertAdjacentHTML('afterbegin', cardMarkup);
-    // this.toggleRing();
   }
   onDeleteClick(event) {
     if (event.target.nodeName === 'BUTTON') {
@@ -45,7 +45,7 @@ export default class View extends EventEmitter {
     }
   }
 
-  // toggleRing() {
-  //   this.ring.classList.toggle('ring--hidden');
-  // }
+  toggleRing() {
+    this.ring.classList.toggle('ring--hidden');
+  }
 }
