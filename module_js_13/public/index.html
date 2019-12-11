@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
-  <link href="main.css" rel="stylesheet"></head>
-  <body>
-    <form class="url-form">
-      <input type="text" class="url-form__input" required />
-      <button type="submit" class="url-form__button">Добавить</button>
-    </form>
 
-    <div class="favorites-wrapper"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+<link href="main.css" rel="stylesheet"></head>
 
-    <template id="favorites-template">
-      <section class="favorites-card">
-        <p>{{ title }}</p>
-        <p>{{ description }}</p>
-        <img class="favorites-card__img" src="{{ image }}" alt="" />
-        <a href="{{ url }}" class="favorites-card__url">{{ url }}</a>
-        <button class="favorites-card__delete">Удалить</button>
-      </section>
-    </template>
+<body>
+  <form class="url-form">
+    <input placeholder="type any home link" type="text" class="url-form__input" required />
+    <button type="submit" class="url-form__button">Добавить</button>
+  </form>
 
-    <!-- ============================== -->
+  <div class="favorites-wrapper"></div>
 
-    <div class="ring-wrapper ring--hidden">
-      <div class="lds-ring">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+  <template id="favorites-template">
+    <section class="favorites-card">
+      <p>{{ title }}</p>
+      <p>{{ description }}</p>
+      <img class="favorites-card__img" src="{{ image }}" alt="" />
+      <a href="{{ url }}" class="favorites-card__url">{{ url }}</a>
+      <button class="favorites-card__delete">Удалить</button>
+    </section>
+  </template>
+
+  <!-- ============================== -->
+
+  <div class="ring-wrapper ring--hidden">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
-  <script type="text/javascript" src="bundle.js"></script></body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
+<script type="text/javascript" src="bundle.js"></script></body>
+
 </html>
